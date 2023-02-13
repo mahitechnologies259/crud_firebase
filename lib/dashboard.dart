@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'services/crud.dart';
 
 class DashBoard extends StatelessWidget {
   DashBoard({Key? key}) : super(key: key);
 
   late String carModel;
   late String carColor;
+
+  crudMethods crudObj = crudMethods();
 
   Future<bool> addDialog(BuildContext context) async {
     return await showDialog(
@@ -42,7 +45,8 @@ class DashBoard extends StatelessWidget {
                       'CarName':this.carModel,
                       'CarColor':this.carColor
                     };
-                    // crudObj.addData()
+                    crudObj.addData(carData);
+                    dialogTrigger(context);
                   },
                   child: Text(
                     "Add"
@@ -65,6 +69,26 @@ class DashBoard extends StatelessWidget {
               icon: Icon(Icons.add))
         ],
       ),
+    );
+  }
+
+  Future dialogTrigger(BuildContext context) {
+    return showDialog(context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context){
+      return AlertDialog(
+        title: Text("Job Done", style: TextStyle(fontSize: 15),),
+        content: Text("Added"),
+        actions: [
+          TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child: Text("Alright")
+          )
+        ],
+      );
+      }
     );
   }
 }
